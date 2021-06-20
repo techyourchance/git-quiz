@@ -37,13 +37,18 @@ class _QuestionWidgetState extends State<QuestionWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.only(left: 20.0, right: 20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
               '${widget.question.body}',
+              style: TextStyle(
+                color: Colors.grey[850],
+                fontSize: 20,
+              ),
             ),
+            SizedBox(height: 10),
             ...widget.question.answers.asMap().entries.map(
                   (entry) => RadioListTile(
                     value: entry.key,

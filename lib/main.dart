@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:git_quiz/question.dart';
 import 'package:git_quiz/question_widget.dart';
 
@@ -11,6 +12,9 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    debugPaintSizeEnabled = false; // show widget bounds
+
     return MaterialApp(
       title: 'Git Quiz',
       theme: ThemeData(
@@ -50,9 +54,11 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.only(left: 40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             QuestionWidget(question: question, onAnswerSelectedCallback: _onAnswerSelected),
             ElevatedButton(
