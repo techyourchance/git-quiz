@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:git_quiz/question.dart';
+import 'package:git_quiz/question_widget.dart';
+
+import 'answer.dart';
 
 void main() {
   runApp(MyApp());
@@ -37,6 +41,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var question = Question(
+        "Command to create new Git repo?",
+        [Answer("git commit"), Answer("git status"), Answer("git init"), Answer("git add")],
+        2
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -45,13 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            QuestionWidget(question: question),
           ],
         ),
       ),
