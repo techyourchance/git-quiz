@@ -6,9 +6,11 @@ import 'package:git_quiz/question.dart';
 import 'answer.dart';
 
 class QuestionWidget extends StatefulWidget {
-  final Question question;
 
-  const QuestionWidget({Key? key, required this.question}) : super(key: key);
+  final Question question;
+  final Function onAnswerSelectedCallback;
+
+  const QuestionWidget({Key? key, required this.question, required this.onAnswerSelectedCallback}) : super(key: key);
 
   @override
   _QuestionWidgetState createState() => _QuestionWidgetState();
@@ -17,7 +19,7 @@ class QuestionWidget extends StatefulWidget {
 
 class _QuestionWidgetState extends State<QuestionWidget> {
 
-  int _selectedIndex = -1;
+  int selectedIndex = -1;
 
   _QuestionWidgetState();
 
@@ -45,7 +47,7 @@ class _QuestionWidgetState extends State<QuestionWidget> {
             ...widget.question.answers.asMap().entries.map(
                   (entry) => RadioListTile(
                     value: entry.key,
-                    groupValue: _selectedIndex,
+                    groupValue: selectedIndex,
                     onChanged: _onChanged,
                     title: Text(entry.value.body),
                   ),
@@ -61,7 +63,8 @@ class _QuestionWidgetState extends State<QuestionWidget> {
       return;
     }
     setState(() {
-      _selectedIndex = clickedIndex;
+      selectedIndex = clickedIndex;
+      widget.onAnswerSelectedCallback(clickedIndex);
     });
   }
 

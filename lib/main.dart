@@ -31,21 +31,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final question = Question(
+      "Command to create new Git repo?",
+      [Answer("git commit"), Answer("git status"), Answer("git init"), Answer("git add")],
+      2
+  );
+
+  var selectedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
-    var question = Question(
-        "Command to create new Git repo?",
-        [Answer("git commit"), Answer("git status"), Answer("git init"), Answer("git add")],
-        2
+    final style = ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 20)
     );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -54,15 +54,33 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            QuestionWidget(question: question),
+            QuestionWidget(question: question, onAnswerSelectedCallback: _onAnswerSelected),
+            ElevatedButton(
+              style: style,
+              onPressed: _onCheckAnswerClicked,
+              child: const Text('Check answer'),
+            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
     );
   }
+
+  void _onAnswerSelected(int index) {
+    selectedIndex = index;
+  }
+
+  void _onCheckAnswerClicked() {
+    if (selectedIndex == question.correctAnswerIndex) {
+      _showSnackBar("Correct");
+    } else {
+      _showSnackBar("Incorrect");
+    }
+  }
+
+  void _showSnackBar(String text) {
+    final snackBar = SnackBar(duration: Duration(milliseconds: 500), content: Text(text));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
 }
