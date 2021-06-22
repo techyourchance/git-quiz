@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:git_quiz/question.dart';
 import 'package:git_quiz/question_widget.dart';
+import 'package:git_quiz/questions_provider.dart';
 
 import 'answer.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Git Quiz Home Page'),
+      home: MyHomePage(title: 'Git Quiz'),
     );
   }
 }
@@ -36,13 +37,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  final question = Question(
-      "Command to create new Git repo?",
-      [Answer("git commit"), Answer("git status"), Answer("git init"), Answer("git add")],
-      2
-  );
+  final questionsProvider = QuestionsProvider();
 
-  var selectedIndex = -1;
+  late Question question;
+  late int selectedIndex;
+
+
+  @override
+  void initState() {
+    super.initState();
+    question = questionsProvider.getQuestions().first;
+    selectedIndex = -1;
+  }
 
   @override
   Widget build(BuildContext context) {
