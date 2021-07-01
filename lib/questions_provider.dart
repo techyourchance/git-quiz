@@ -5,9 +5,14 @@ import 'answer.dart';
 
 class QuestionsProvider {
 
-  List<Question> getQuestions() {
-    List<Question> questions = [];
-    questions.add(
+  List<Question> _questions = [];
+
+  QuestionsProvider() {
+    _initQuestions();
+  }
+
+  void _initQuestions() {
+    _questions.add(
         Question(
           "Which command initializes new local Git repository?",
           [
@@ -19,7 +24,7 @@ class QuestionsProvider {
           1,
         )
     );
-    questions.add(
+    _questions.add(
         Question(
           "Which command shows information about the current Git repository?",
           [
@@ -31,8 +36,14 @@ class QuestionsProvider {
           2,
         )
     );
+  }
 
-    return questions;
+  int getNumOfQuestions() {
+    return _questions.length;
+  }
+
+  Question getQuestionAtIndex(int index) {
+    return _questions[index];
   }
 
 }

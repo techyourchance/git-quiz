@@ -5,60 +5,39 @@ import 'package:git_quiz/question.dart';
 
 import 'answer.dart';
 
-class QuestionWidget extends StatefulWidget {
+class QuestionWidget extends StatelessWidget {
 
   final Question question;
   final Function onAnswerSelectedCallback;
+  final int selectedAnswerIndex;
 
-  const QuestionWidget({Key? key, required this.question, required this.onAnswerSelectedCallback}) : super(key: key);
+  const QuestionWidget({Key? key, required this.question, required this.selectedAnswerIndex, required this.onAnswerSelectedCallback}) : super(key: key);
 
-  @override
-  _QuestionWidgetState createState() => _QuestionWidgetState();
-}
-
-
-class _QuestionWidgetState extends State<QuestionWidget> {
-
-  int selectedIndex = -1;
-
-  _QuestionWidgetState();
-
-  @override
-  void initState() {
-    super.initState();
-
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-  
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              '${widget.question.body}',
-              style: TextStyle(
-                color: Colors.grey[850],
-                fontSize: 20,
-              ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            '${question.body}',
+            style: TextStyle(
+              color: Colors.grey[850],
+              fontSize: 20,
             ),
-            SizedBox(height: 10),
-            ...widget.question.answers.asMap().entries.map(
-                  (entry) => RadioListTile(
-                    value: entry.key,
-                    groupValue: selectedIndex,
-                    onChanged: _onChanged,
-                    title: Text(entry.value.body),
-                  ),
-            ).toList(),
-          ],
-        ),
+          ),
+          SizedBox(height: 10),
+          ...question.answers.asMap().entries.map(
+                (entry) => RadioListTile(
+              value: entry.key,
+              groupValue: selectedAnswerIndex,
+              onChanged: _onChanged,
+              title: Text(entry.value.body),
+            ),
+          ).toList(),
+        ],
+      ),
     );
   }
 
@@ -67,11 +46,6 @@ class _QuestionWidgetState extends State<QuestionWidget> {
     if (clickedIndex == null) {
       return;
     }
-    setState(() {
-      selectedIndex = clickedIndex;
-      widget.onAnswerSelectedCallback(clickedIndex);
-    });
+    onAnswerSelectedCallback(clickedIndex);
   }
-
-
 }
