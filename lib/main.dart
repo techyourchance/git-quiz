@@ -3,6 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:git_quiz/question.dart';
 import 'package:git_quiz/question_widget.dart';
 import 'package:git_quiz/questions_provider.dart';
+import 'package:git_quiz/quiz_results.dart';
+import 'package:git_quiz/quiz_results_widget.dart';
 
 import 'answer.dart';
 
@@ -42,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late int currentQuestionIndex;
   late int selectedAnswerIndex;
 
+  bool quizCompeted = false;
 
   @override
   void initState() {
@@ -66,16 +69,20 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            QuestionWidget(
-                question: _getCurrentQuestion(),
-                selectedAnswerIndex: selectedAnswerIndex,
-                onAnswerSelectedCallback: _onAnswerSelected
-            ),
-            ElevatedButton(
-              style: style,
-              onPressed: _onCheckAnswerClicked,
-              child: const Text('Check answer'),
-            ),
+            if (quizCompeted) ...[
+              QuizResultsWidget(quizResults: _getQuizResults(),),
+            ] else ...[
+              QuestionWidget(
+                  question: _getCurrentQuestion(),
+                  selectedAnswerIndex: selectedAnswerIndex,
+                  onAnswerSelectedCallback: _onAnswerSelected
+              ),
+              ElevatedButton(
+                style: style,
+                onPressed: _onCheckAnswerClicked,
+                child: const Text('Check answer'),
+              ),
+            ],
           ],
         ),
       ),
@@ -99,12 +106,25 @@ class _MyHomePageState extends State<MyHomePage> {
           currentQuestionIndex++;
           selectedAnswerIndex = -1;
         } else {
-          _showSnackBar("Quiz completed");
+          _quizCompleted();
         }
       });
     } else {
       _showSnackBar("Incorrect");
     }
+  }
+
+  void _quizCompleted() {
+    setState(() {
+      quizCompeted = true;
+    });
+  }
+
+  QuizResults _getQuizResults() {
+    return QuizResults(
+        questionsProvider.getNumOfQuestions(),
+        questionsProvider.getNumOfQuestions() // TODO: compute the actual result
+    );
   }
 
   void _showSnackBar(String text) {
@@ -113,3 +133,4 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 }
+
