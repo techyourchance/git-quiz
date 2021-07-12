@@ -77,11 +77,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   selectedAnswerIndex: selectedAnswerIndex,
                   onAnswerSelectedCallback: _onAnswerSelected
               ),
-              ElevatedButton(
-                style: style,
-                onPressed: _onCheckAnswerClicked,
-                child: const Text('Check answer'),
-              ),
             ],
           ],
         ),
@@ -96,22 +91,17 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onAnswerSelected(int index) {
     setState(() {
       selectedAnswerIndex = index;
-    });
-  }
-
-  void _onCheckAnswerClicked() {
-    if (selectedAnswerIndex == _getCurrentQuestion().correctAnswerIndex) {
-      setState(() {
+      if (selectedAnswerIndex == _getCurrentQuestion().correctAnswerIndex) {
         if (currentQuestionIndex < questionsProvider.getNumOfQuestions() - 1) {
           currentQuestionIndex++;
           selectedAnswerIndex = -1;
         } else {
           _quizCompleted();
         }
-      });
-    } else {
-      _showSnackBar("Incorrect");
-    }
+      } else {
+        _showSnackBar("Incorrect");
+      }
+    });
   }
 
   void _quizCompleted() {
