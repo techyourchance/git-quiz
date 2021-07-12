@@ -98,8 +98,6 @@ class _MyHomePageState extends State<MyHomePage> {
         } else {
           _quizCompleted();
         }
-      } else {
-        _showSnackBar("Incorrect");
       }
     });
   }
