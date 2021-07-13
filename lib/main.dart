@@ -97,12 +97,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _onAnswerSelected(int index) {
     setState(() {
-      quizResultsTracker.answerAttempt(_getCurrentQuestion());
       selectedAnswerIndex = index;
     });
   }
 
   void _onCheckAnswerClicked() {
+    quizResultsTracker.answerAttempt(_getCurrentQuestion());
     if (selectedAnswerIndex == _getCurrentQuestion().correctAnswerIndex) {
       setState(() {
         if (currentQuestionIndex < questionsProvider.getNumOfQuestions() - 1) {
