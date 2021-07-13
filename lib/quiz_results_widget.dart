@@ -36,7 +36,7 @@ class QuizResultsWidget extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            'Quiz grade: ${quizResults.totalPoints}',
+            'Quiz score: ${quizResults.totalPoints}/100',
             style: TextStyle(
               color: Colors.grey[850],
               fontSize: 20,
