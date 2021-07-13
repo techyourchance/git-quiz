@@ -4,6 +4,7 @@ import 'package:git_quiz/question.dart';
 import 'package:git_quiz/question_widget.dart';
 import 'package:git_quiz/questions_provider.dart';
 import 'package:git_quiz/quiz_results.dart';
+import 'package:git_quiz/quiz_results_tracker.dart';
 import 'package:git_quiz/quiz_results_widget.dart';
 
 import 'answer.dart';
@@ -40,6 +41,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   final questionsProvider = QuestionsProvider();
+  final quizResultsTracker = QuizResultsTracker();
 
   late int currentQuestionIndex;
   late int selectedAnswerIndex;
@@ -70,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             if (quizCompeted) ...[
-              QuizResultsWidget(quizResults: _getQuizResults(),),
+              QuizResultsWidget(quizResults: quizResultsTracker.getQuizResults()),
             ] else ...[
               QuestionWidget(
                   question: _getCurrentQuestion(),
@@ -95,6 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _onAnswerSelected(int index) {
     setState(() {
+      quizResultsTracker.answerAttempt(_getCurrentQuestion());
       selectedAnswerIndex = index;
     });
   }
@@ -118,13 +121,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       quizCompeted = true;
     });
-  }
-
-  QuizResults _getQuizResults() {
-    return QuizResults(
-        questionsProvider.getNumOfQuestions(),
-        questionsProvider.getNumOfQuestions() // TODO: compute the actual result
-    );
   }
 
   void _showSnackBar(String text) {
