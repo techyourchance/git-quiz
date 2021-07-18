@@ -14,7 +14,7 @@ class QuestionsProvider {
   void _initQuestions() {
     _questions.add(
         Question(
-          "Which command initializes new local Git repository?",
+          "Command to initialize new local Git repository",
           [
             Answer("git create"),
             Answer("git init"),
@@ -26,7 +26,7 @@ class QuestionsProvider {
     );
     _questions.add(
         Question(
-          "Which command shows information about the current Git repository?",
+          "Command to show information about the current Git repository",
           [
             Answer("git stats"),
             Answer("git info"),
@@ -38,7 +38,7 @@ class QuestionsProvider {
     );
     _questions.add(
         Question(
-          "Which command stages files for commit?",
+          "Command to stage files for commit",
           [
             Answer("git add"),
             Answer("git reset"),
@@ -50,7 +50,7 @@ class QuestionsProvider {
     );
     _questions.add(
         Question(
-          "Which command discards non-staged changes?",
+          "Command to discard non-staged changes",
           [
             Answer("git reset"),
             Answer("git revert"),
@@ -62,7 +62,7 @@ class QuestionsProvider {
     );
     _questions.add(
         Question(
-          "Which command removes changes from staging area?",
+          "Command to remove changes from staging area",
           [
             Answer("git revert"),
             Answer("git reset --hard"),
