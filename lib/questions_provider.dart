@@ -36,6 +36,42 @@ class QuestionsProvider {
           2,
         )
     );
+    _questions.add(
+        Question(
+          "Which command stages files for commit?",
+          [
+            Answer("git add"),
+            Answer("git reset"),
+            Answer("git track"),
+            Answer("git watch"),
+          ],
+          0,
+        )
+    );
+    _questions.add(
+        Question(
+          "Which command discards non-staged changes?",
+          [
+            Answer("git reset"),
+            Answer("git revert"),
+            Answer("git checkout"),
+            Answer("git drop"),
+          ],
+          2,
+        )
+    );
+    _questions.add(
+        Question(
+          "Which command removes changes from staging area?",
+          [
+            Answer("git revert"),
+            Answer("git reset --hard"),
+            Answer("git checkout"),
+            Answer("git reset"),
+          ],
+          3,
+        )
+    );
   }
 
   int getNumOfQuestions() {
