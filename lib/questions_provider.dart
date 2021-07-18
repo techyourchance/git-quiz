@@ -14,18 +14,6 @@ class QuestionsProvider {
   void _initQuestions() {
     _questions.add(
         Question(
-          "Which command initializes new local Git repository?",
-          [
-            Answer("git create"),
-            Answer("git init"),
-            Answer("git start"),
-            Answer("git initialize"),
-          ],
-          1,
-        )
-    );
-    _questions.add(
-        Question(
           "Which command shows information about the current Git repository?",
           [
             Answer("git stats"),
@@ -34,6 +22,18 @@ class QuestionsProvider {
             Answer("git information"),
           ],
           2,
+        )
+    );
+    _questions.add(
+        Question(
+          "Which command initializes new Git repository?",
+          [
+            Answer("git create"),
+            Answer("git init"),
+            Answer("git start"),
+            Answer("git initialize"),
+          ],
+          1,
         )
     );
   }
