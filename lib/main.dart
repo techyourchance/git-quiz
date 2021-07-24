@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:git_quiz/debug_manager.dart';
 import 'package:git_quiz/question.dart';
 import 'package:git_quiz/question_widget.dart';
 import 'package:git_quiz/questions_provider.dart';
 import 'package:git_quiz/quiz_results.dart';
 import 'package:git_quiz/quiz_results_tracker.dart';
 import 'package:git_quiz/quiz_results_widget.dart';
+import 'package:flutter/foundation.dart' as Foundation;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'answer.dart';
+import 'debug_drawer.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
 
@@ -30,9 +35,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
   final String title;
+
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -40,13 +45,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  final questionsProvider = QuestionsProvider();
-  final quizResultsTracker = QuizResultsTracker();
+  late final questionsProvider;
+  late final quizResultsTracker;
+  late final DebugManager debugManager;
 
   late int currentQuestionIndex;
   late int selectedAnswerIndex;
 
   bool quizCompeted = false;
+
+  _MyHomePageState() {
+    questionsProvider = QuestionsProvider();
+    quizResultsTracker = QuizResultsTracker();
+    debugManager = DebugManager(questionsProvider);
+  }
 
   @override
   void initState() {
@@ -65,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
+      endDrawer: Foundation.kDebugMode ? Drawer(child: DebugDrawer(debugManager)) : null,
       body: Padding(
         padding: const EdgeInsets.only(left: 40),
         child: Column(
@@ -95,7 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
       selectedAnswerIndex = index;
       quizResultsTracker.answerAttempt(_getCurrentQuestion());
       if (selectedAnswerIndex == _getCurrentQuestion().correctAnswerIndex) {
-        if (currentQuestionIndex < questionsProvider.getNumOfQuestions() - 1) {
+        var totalQuestions = _getTotalQuestions();
+        if (currentQuestionIndex < totalQuestions) {
           currentQuestionIndex++;
           selectedAnswerIndex = -1;
         } else {
@@ -114,6 +128,14 @@ class _MyHomePageState extends State<MyHomePage> {
   void _showSnackBar(String text) {
     final snackBar = SnackBar(duration: Duration(milliseconds: 500), content: Text(text));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  int _getTotalQuestions() {
+    if (debugManager.limitQuestions) {
+      return debugManager.getQuestionsLimit();
+    } else {
+      return questionsProvider.getNumOfQuestions() - 1;
+    }
   }
 
 }
