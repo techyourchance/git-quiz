@@ -22,7 +22,7 @@ class _DebugDrawerState extends State<DebugDrawer> {
   @override
   void initState() {
     super.initState();
-    maxQuestionsCtrl.text = widget._debugManager.getQuestionsLimit().toString();
+    maxQuestionsCtrl.text = widget._debugManager.getMaxQuestions().toString();
   }
 
   @override

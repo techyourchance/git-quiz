@@ -13,7 +13,7 @@ class DebugManager {
 
   DebugManager(this._questionsProvider);
 
-  int getQuestionsLimit() {
+  int getMaxQuestions() {
     return limitQuestions ? 2 : _questionsProvider.getNumOfQuestions();
   }
 

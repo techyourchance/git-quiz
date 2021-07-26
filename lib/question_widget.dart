@@ -24,6 +24,7 @@ class _QuestionWidgetState extends State<QuestionWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.only(left: 30, right: 30),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,

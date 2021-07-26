@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    debugPaintSizeEnabled = false; // show widget bounds
+    //debugPaintSizeEnabled = true; // show widget bounds
 
     return MaterialApp(
       title: 'Git Quiz',
@@ -78,23 +78,20 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       endDrawer: Foundation.kDebugMode ? Drawer(child: DebugDrawer(debugManager)) : null,
-      body: Padding(
-        padding: const EdgeInsets.only(left: 40),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            if (quizCompeted) ...[
-              QuizResultsWidget(quizResults: quizResultsTracker.getQuizResults()),
-            ] else ...[
-              QuestionWidget(
-                  question: _getCurrentQuestion(),
-                  selectedAnswerIndex: selectedAnswerIndex,
-                  onAnswerSelectedCallback: _onAnswerSelected
-              ),
-            ],
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          if (quizCompeted) ...[
+            QuizResultsWidget(quizResults: quizResultsTracker.getQuizResults()),
+          ] else ...[
+            QuestionWidget(
+                question: _getCurrentQuestion(),
+                selectedAnswerIndex: selectedAnswerIndex,
+                onAnswerSelectedCallback: _onAnswerSelected
+            ),
           ],
-        ),
+        ],
       ),
     );
   }
@@ -108,8 +105,8 @@ class _MyHomePageState extends State<MyHomePage> {
       selectedAnswerIndex = index;
       quizResultsTracker.answerAttempt(_getCurrentQuestion());
       if (selectedAnswerIndex == _getCurrentQuestion().correctAnswerIndex) {
-        var totalQuestions = _getTotalQuestions();
-        if (currentQuestionIndex < totalQuestions) {
+        var lastQuestionIndex = _getLastQuestionIndex();
+        if (currentQuestionIndex < lastQuestionIndex) {
           currentQuestionIndex++;
           selectedAnswerIndex = -1;
         } else {
@@ -130,9 +127,9 @@ class _MyHomePageState extends State<MyHomePage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  int _getTotalQuestions() {
+  int _getLastQuestionIndex() {
     if (debugManager.limitQuestions) {
-      return debugManager.getQuestionsLimit();
+      return debugManager.getMaxQuestions() - 1;
     } else {
       return questionsProvider.getNumOfQuestions() - 1;
     }
