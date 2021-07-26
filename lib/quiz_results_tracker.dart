@@ -8,6 +8,10 @@ class QuizResultsTracker {
 
   final Map<Question, _QuestionResult> _questionsResults = Map();
 
+  void reset() {
+    _questionsResults.clear();
+  }
+
   void answerAttempt(Question question) {
     _questionsResults.update(
       question,

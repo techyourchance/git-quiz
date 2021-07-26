@@ -63,16 +63,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    currentQuestionIndex = 0;
-    selectedAnswerIndex = -1;
+    resetQuiz();
   }
 
   @override
   Widget build(BuildContext context) {
-    final style = ElevatedButton.styleFrom(
-        textStyle: const TextStyle(fontSize: 20)
-    );
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -83,7 +78,10 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if (quizCompeted) ...[
-            QuizResultsWidget(quizResults: quizResultsTracker.getQuizResults()),
+            QuizResultsWidget(
+              quizResults: quizResultsTracker.getQuizResults(),
+              onRestartClickedCallback: _onRestartClicked,
+            ),
           ] else ...[
             QuestionWidget(
                 question: _getCurrentQuestion(),
@@ -133,6 +131,20 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       return questionsProvider.getNumOfQuestions() - 1;
     }
+  }
+
+  void _onRestartClicked() {
+    setState(() {
+      //_showSnackBar("restart");
+      resetQuiz();
+    });
+  }
+
+  void resetQuiz() {
+    quizResultsTracker.reset();
+    currentQuestionIndex = 0;
+    selectedAnswerIndex = -1;
+    quizCompeted = false;
   }
 
 }

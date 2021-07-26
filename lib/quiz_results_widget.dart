@@ -9,8 +9,13 @@ import 'answer.dart';
 class QuizResultsWidget extends StatelessWidget {
 
   final QuizResults quizResults;
+  final Function onRestartClickedCallback;
 
-  const QuizResultsWidget({Key? key, required this.quizResults}) : super(key: key);
+  const QuizResultsWidget({
+    Key? key,
+    required this.quizResults,
+    required this.onRestartClickedCallback
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +48,16 @@ class QuizResultsWidget extends StatelessWidget {
               fontSize: 20,
             ),
           ),
-        ],
+          SizedBox(height: 20),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20)
+            ),
+            onPressed: () => onRestartClickedCallback(),
+            child: const Text('Restart quiz'),
+    ),
+
+    ],
       ),
     );
   }
