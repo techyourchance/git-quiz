@@ -72,6 +72,30 @@ class QuestionsProvider {
           3,
         )
     );
+    _questions.add(
+        Question(
+          "Command to read all configuration options",
+          [
+            Answer("git config"),
+            Answer("git options --list"),
+            Answer("git config --list"),
+            Answer("git listconfig"),
+          ],
+          2,
+        )
+    );
+    _questions.add(
+        Question(
+          "Command to create a global alias",
+          [
+            Answer("git config --global alias.<name> <command>"),
+            Answer("git config --alias <name> <command>"),
+            Answer("git config --local alias.<name> <command>"),
+            Answer("git alias add <name> <command>"),
+          ],
+          0,
+        )
+    );
   }
 
   int getNumOfQuestions() {
