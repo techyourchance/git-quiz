@@ -96,6 +96,30 @@ class QuestionsProvider {
           0,
         )
     );
+    _questions.add(
+        Question(
+          "Command to list all local branches",
+          [
+            Answer("git branch"),
+            Answer("git branch show"),
+            Answer("git branch --show"),
+            Answer("git branch --local"),
+          ],
+          0,
+        )
+    );
+    _questions.add(
+        Question(
+          "Command to create and check out new local branch",
+          [
+            Answer("git checkout -b <branch>"),
+            Answer("git branch <branch>"),
+            Answer("git branch add <branch>"),
+            Answer("git branch -s <branch>"),
+          ],
+          0,
+        )
+    );
   }
 
   int getNumOfQuestions() {
