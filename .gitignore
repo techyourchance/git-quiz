@@ -1,3 +1,6 @@
+# GitHub's PATs
+*.pat
+
 # Miscellaneous
 *.class
 *.log
