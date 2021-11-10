@@ -50,6 +50,18 @@ class QuestionsProvider {
     );
     _questions.add(
         Question(
+          "Command to clone git repository",
+          [
+            Answer("git duplicate <uri>"),
+            Answer("git copy <uri>"),
+            Answer("git clone <uri>"),
+            Answer("git clone repo <uri>"),
+          ],
+          2,
+        )
+    );
+    _questions.add(
+        Question(
           "Command to discard non-staged changes",
           [
             Answer("git reset"),
