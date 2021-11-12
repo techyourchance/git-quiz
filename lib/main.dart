@@ -43,7 +43,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
 
   late final questionsProvider;
   late final quizResultsTracker;
@@ -53,6 +53,26 @@ class _MyHomePageState extends State<MyHomePage> {
   late int selectedAnswerIndex;
 
   bool quizCompeted = false;
+
+  late final AnimationController _animationController = AnimationController(
+    duration: const Duration(milliseconds: 300),
+    vsync: this,
+  );
+
+  late final Animation<Offset> _slideOutAnimation = Tween<Offset>(
+    begin: Offset.zero,
+    end: const Offset(-1, 0.0),
+  ).animate(_animationController);
+
+  late final Animation<Offset> _slideInAnimation = Tween<Offset>(
+    begin: const Offset(1, 0.0),
+    end: Offset.zero,
+  ).animate(_animationController)..addStatusListener((status) {
+    if (status == AnimationStatus.completed) {
+      _animationController.reset();
+      _nextQuestionShown();
+    }
+  });
 
   _MyHomePageState() {
     questionsProvider = QuestionsProvider();
@@ -83,11 +103,34 @@ class _MyHomePageState extends State<MyHomePage> {
               onRestartClickedCallback: _onRestartClicked,
             ),
           ] else ...[
-            QuestionWidget(
-                question: _getCurrentQuestion(),
-                selectedAnswerIndex: selectedAnswerIndex,
-                onAnswerSelectedCallback: _onAnswerSelected
-            ),
+            Stack(
+              children: [
+                if (_animationController.isAnimating) ...[
+                  SlideTransition(
+                    position: _slideOutAnimation,
+                    child: QuestionWidget(
+                        question: _getCurrentQuestion(),
+                        selectedAnswerIndex: selectedAnswerIndex,
+                        onAnswerSelectedCallback: _onAnswerSelected
+                    ),
+                  ),
+                  SlideTransition(
+                    position: _slideInAnimation,
+                    child: QuestionWidget(
+                        question: _getNextQuestion(),
+                        selectedAnswerIndex: -1,
+                        onAnswerSelectedCallback: () => {}
+                    ),
+                  ),
+                ] else ...[
+                  QuestionWidget(
+                      question: _getCurrentQuestion(),
+                      selectedAnswerIndex: selectedAnswerIndex,
+                      onAnswerSelectedCallback: _onAnswerSelected
+                  )
+                ]
+              ],
+            )
           ],
         ],
       ),
@@ -98,6 +141,18 @@ class _MyHomePageState extends State<MyHomePage> {
     return questionsProvider.getQuestionAtIndex(currentQuestionIndex);
   }
 
+  Question _getNextQuestion() {
+    return questionsProvider.getQuestionAtIndex(currentQuestionIndex + 1);
+  }
+
+  int _getLastQuestionIndex() {
+    if (debugManager.limitQuestions) {
+      return debugManager.getMaxQuestions() - 1;
+    } else {
+      return questionsProvider.getNumOfQuestions() - 1;
+    }
+  }
+
   void _onAnswerSelected(int index) {
     setState(() {
       selectedAnswerIndex = index;
@@ -105,12 +160,18 @@ class _MyHomePageState extends State<MyHomePage> {
       if (selectedAnswerIndex == _getCurrentQuestion().correctAnswerIndex) {
         var lastQuestionIndex = _getLastQuestionIndex();
         if (currentQuestionIndex < lastQuestionIndex) {
-          currentQuestionIndex++;
-          selectedAnswerIndex = -1;
+          _animationController.forward();
         } else {
           _quizCompleted();
         }
       }
+    });
+  }
+
+  void _nextQuestionShown() {
+    setState(() {
+      currentQuestionIndex++;
+      selectedAnswerIndex = -1;
     });
   }
 
@@ -123,14 +184,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void _showSnackBar(String text) {
     final snackBar = SnackBar(duration: Duration(milliseconds: 500), content: Text(text));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  int _getLastQuestionIndex() {
-    if (debugManager.limitQuestions) {
-      return debugManager.getMaxQuestions() - 1;
-    } else {
-      return questionsProvider.getNumOfQuestions() - 1;
-    }
   }
 
   void _onRestartClicked() {
