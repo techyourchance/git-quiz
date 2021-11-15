@@ -30,12 +30,23 @@ class _QuestionWidgetState extends State<QuestionWidget> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            '${widget.question.body}',
-            style: TextStyle(
-              color: Colors.grey[850],
-              fontSize: 20,
-              fontWeight: FontWeight.bold
+          Container(
+            height: 100,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  '${widget.question.body}',
+                  style: TextStyle(
+                    color: Colors.grey[850],
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
+                  ),
+                  maxLines: 3,
+                ),
+              ],
             ),
           ),
           SizedBox(height: 10),
