@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:git_quiz/question.dart';
 
@@ -41,6 +42,7 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                   style: TextStyle(
                     color: Colors.grey[850],
                     fontSize: 20,
+                    fontWeight: FontWeight.bold
                   ),
                   maxLines: 3,
                 ),
@@ -59,7 +61,10 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                       value: entry.key,
                       groupValue: widget.selectedAnswerIndex,
                       onChanged: _onChanged,
-                      title: Text(entry.value.body),
+                      title: Text(
+                        entry.value.body,
+                        style: GoogleFonts.robotoMono()
+                      ),
                     ),
                   )
           ).toList(),
